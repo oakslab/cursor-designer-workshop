@@ -1,6 +1,6 @@
 ---
 theme: default
-background: https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80
+background: ./welcome-image.png
 class: text-center
 highlighter: shiki
 lineNumbers: false
@@ -18,11 +18,7 @@ mdc: true
 
 Design Workshop
 
-<div class="pt-12">
-  <span @click="$slidev.nav.next" class="px-2 py-1 rounded cursor-pointer" hover="bg-white bg-opacity-10">
-    Press Space for next page <carbon:arrow-right class="inline"/>
-  </span>
-</div>
+
 
 ---
 layout: quote
