@@ -1,0 +1,123 @@
+---
+globs: *.css,*.tsx,*.ts
+---
+
+# Styling Guidelines
+
+## Tailwind CSS
+
+This project uses **Tailwind CSS 4** with CSS variables for theming.
+
+### Global Styles
+
+Global styles and CSS variables are defined in [src/styles/globals.css](mdc:src/styles/globals.css).
+
+### CSS Variables
+
+Theme colors use CSS variables in HSL format:
+
+- `--background`, `--foreground`
+- `--primary`, `--primary-foreground`
+- `--secondary`, `--secondary-foreground`
+- `--accent`, `--accent-foreground`
+- `--destructive`, `--destructive-foreground`
+- `--muted`, `--muted-foreground`
+- `--card`, `--card-foreground`
+- `--border`, `--input`, `--ring`
+
+Access these via Tailwind utilities:
+
+```tsx
+<div className="bg-background text-foreground">
+  <Button className="bg-primary text-primary-foreground">Primary Button</Button>
+</div>
+```
+
+## Utility Function
+
+Use the `cn()` utility from [src/lib/utils.ts](mdc:src/lib/utils.ts) for conditional classes:
+
+```typescript
+import { cn } from "~/lib/utils";
+
+<div className={cn(
+  "base-classes",
+  isActive && "active-classes",
+  variant === "large" && "large-classes"
+)} />
+```
+
+## Best Practices
+
+### Responsive Design
+
+Use Tailwind's responsive prefixes:
+
+```tsx
+<div className="flex flex-col md:flex-row lg:gap-8">
+  {/* Mobile: column, Desktop: row */}
+</div>
+```
+
+### Common Patterns
+
+**Container with padding:**
+
+```tsx
+<div className="container mx-auto px-4 py-8">
+```
+
+**Centered content:**
+
+```tsx
+<div className="flex min-h-screen items-center justify-center">
+```
+
+**Card with hover:**
+
+```tsx
+<div className="rounded-lg border bg-card p-4 transition-colors hover:bg-accent">
+```
+
+**Truncated text:**
+
+```tsx
+<p className="truncate">Long text here...</p>
+<p className="line-clamp-3">Multi-line truncation...</p>
+```
+
+### Avoid
+
+- ❌ Inline styles - use Tailwind classes instead
+- ❌ Arbitrary values without reason - prefer design tokens
+- ❌ Deep nesting of conditional classes - extract to variants
+- ❌ Modifying `globals.css` without considering theme implications
+
+### Animation
+
+Use Tailwind's built-in animations:
+
+```tsx
+<div className="animate-spin">Loading...</div>
+<div className="transition-all duration-300 ease-in-out">
+```
+
+For custom animations, use `tw-animate-css` package when needed.
+
+## Dark Mode
+
+The project supports dark mode via CSS variables. Both light and dark mode variables are defined in [src/styles/globals.css](mdc:src/styles/globals.css).
+
+Use the `dark:` prefix for dark mode specific styles if needed:
+
+```tsx
+<div className="bg-white dark:bg-gray-900">
+```
+
+## Component Styling Priority
+
+1. Use shadcn component variants when available
+2. Add Tailwind utilities via `className` prop
+3. Use `cn()` for conditional styling
+4. Create wrapper components for complex patterns
+5. Only add to globals.css for truly global styles

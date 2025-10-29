@@ -1,0 +1,55 @@
+---
+alwaysApply: true
+---
+
+# Project Overview
+
+This is a **design-workshop** project built with the T3 stack, featuring Next.js, tRPC, and modern React patterns.
+
+## Tech Stack
+
+- **Framework**: Next.js 15 with Pages Router (not App Router)
+- **Language**: TypeScript 5.8+ with strict mode enabled
+- **API Layer**: tRPC 11 for type-safe API routes
+- **UI Components**: shadcn/ui with "new-york" style variant
+- **Styling**: Tailwind CSS 4 with CSS variables
+- **Icons**: lucide-react
+- **Package Manager**: pnpm 10.6.5
+- **React**: Version 19
+
+## Project Structure
+
+- Main source code: [src/](mdc:src/)
+- Pages: [src/pages/](mdc:src/pages/) - Next.js Pages Router
+- API Routes: [src/pages/api/](mdc:src/pages/api/)
+- tRPC Routers: [src/server/api/routers/](mdc:src/server/api/routers/)
+- UI Components: [src/components/ui/](mdc:src/components/ui/)
+- Hooks: [src/hooks/](mdc:src/hooks/)
+- Utilities: [src/lib/](mdc:src/lib/) and [src/utils/](mdc:src/utils/)
+- Styles: [src/styles/globals.css](mdc:src/styles/globals.css)
+- Presentations: [presentation/](mdc:presentation/) - Uses Slidev
+
+## Path Aliases
+
+The project uses `~/*` as an alias for `./src/*`:
+
+- `~/components` → `src/components`
+- `~/lib` → `src/lib`
+- `~/utils` → `src/utils`
+- `~/hooks` → `src/hooks`
+- `~/server` → `src/server`
+
+Always use these aliases instead of relative imports.
+
+## Key Files
+
+- [tsconfig.json](mdc:tsconfig.json) - TypeScript configuration
+- [components.json](mdc:components.json) - shadcn/ui configuration
+- [package.json](mdc:package.json) - Dependencies and scripts
+- [src/server/api/root.ts](mdc:src/server/api/root.ts) - tRPC router registry
+- [src/server/api/trpc.ts](mdc:src/server/api/trpc.ts) - tRPC initialization and procedures
+
+## Important Notes
+
+- Uses superjson for data serialization in tRPC
+- Development uses Turbopack (`--turbo` flag)

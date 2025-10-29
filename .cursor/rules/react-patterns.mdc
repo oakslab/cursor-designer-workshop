@@ -1,0 +1,346 @@
+---
+globs: *.tsx,*.jsx
+---
+
+# React 19 Patterns and Best Practices
+
+This project uses **React 19** with functional components and hooks.
+
+## Component Structure
+
+### Functional Components
+
+```typescript
+import { type FC } from "react";
+
+interface MyComponentProps {
+  title: string;
+  count?: number;
+}
+
+export const MyComponent: FC<MyComponentProps> = ({ title, count = 0 }) => {
+  return (
+    <div>
+      <h1>{title}</h1>
+      <p>Count: {count}</p>
+    </div>
+  );
+};
+```
+
+### Component Organization
+
+```typescript
+// 1. Imports
+import { useState, useEffect } from "react";
+import { api } from "~/utils/api";
+import { Button } from "~/components/ui/button";
+
+// 2. Types/Interfaces
+interface Props {
+  // ...
+}
+
+// 3. Component
+export function MyComponent({ prop }: Props) {
+  // 4. Hooks (in order: context, state, queries, effects, callbacks)
+  const [state, setState] = useState(0);
+  const { data } = api.example.useQuery();
+
+  useEffect(() => {
+    // Effect logic
+  }, []);
+
+  const handleClick = () => {
+    // Handler logic
+  };
+
+  // 5. Early returns
+  if (!data) return <div>Loading...</div>;
+
+  // 6. Render
+  return (
+    <div>
+      {/* JSX */}
+    </div>
+  );
+}
+```
+
+## Hooks
+
+### State Management
+
+```typescript
+// Simple state
+const [count, setCount] = useState(0);
+
+// Object state
+const [user, setUser] = useState<User | null>(null);
+
+// Derived state (prefer useMemo if expensive)
+const doubleCount = count * 2;
+const expensiveValue = useMemo(() => computeExpensive(data), [data]);
+```
+
+### Effects
+
+```typescript
+// Run once on mount
+useEffect(() => {
+  fetchData();
+}, []);
+
+// Run when dependencies change
+useEffect(() => {
+  updateData(id);
+}, [id]);
+
+// Cleanup
+useEffect(() => {
+  const subscription = subscribe();
+  return () => subscription.unsubscribe();
+}, []);
+```
+
+### Custom Hooks
+
+Place custom hooks in [src/hooks/](mdc:src/hooks/):
+
+```typescript
+// src/hooks/use-example.ts
+import { useState, useEffect } from "react";
+
+export function useExample(param: string) {
+  const [value, setValue] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Logic
+  }, [param]);
+
+  return { value, setValue };
+}
+
+// Usage
+import { useExample } from "~/hooks/use-example";
+
+const { value, setValue } = useExample("test");
+```
+
+## Performance Optimization
+
+### Memoization
+
+```typescript
+// Memoize expensive computations
+const result = useMemo(() => expensiveOperation(data), [data]);
+
+// Memoize callbacks passed to children
+const handleClick = useCallback(() => {
+  doSomething(id);
+}, [id]);
+
+// Memoize components (use sparingly)
+const MemoizedChild = memo(ChildComponent);
+```
+
+### Code Splitting
+
+```typescript
+import dynamic from "next/dynamic";
+
+// Load component dynamically
+const HeavyComponent = dynamic(() => import("~/components/HeavyComponent"), {
+  loading: () => <div>Loading...</div>,
+  ssr: false, // Disable SSR if needed
+});
+```
+
+## Conditional Rendering
+
+```typescript
+// Conditional content
+{isLoading && <Spinner />}
+{error && <Alert>{error.message}</Alert>}
+{data && <DataDisplay data={data} />}
+
+// Ternary
+{isLoggedIn ? <Dashboard /> : <Login />}
+
+// Early return
+if (!user) return <Login />;
+return <Dashboard user={user} />;
+```
+
+## Lists and Keys
+
+```typescript
+// Always use unique, stable keys
+{items.map((item) => (
+  <Item key={item.id} {...item} />
+))}
+
+// ❌ Don't use index as key if list can change
+{items.map((item, index) => (
+  <Item key={index} {...item} />
+))}
+```
+
+## Event Handlers
+
+```typescript
+// Inline handler (for simple cases)
+<Button onClick={() => setCount(count + 1)}>Increment</Button>
+
+// Named handler (preferred for complex logic)
+const handleSubmit = (e: React.FormEvent) => {
+  e.preventDefault();
+  // Submit logic
+};
+
+<form onSubmit={handleSubmit}>...</form>
+
+// Passing arguments
+<Button onClick={() => deleteItem(item.id)}>Delete</Button>
+```
+
+## Props
+
+### Prop Destructuring
+
+```typescript
+// ✅ Destructure in function signature
+function MyComponent({ title, count = 0 }: Props) {
+  return <div>{title}: {count}</div>;
+}
+
+// ❌ Avoid accessing props.x everywhere
+function MyComponent(props: Props) {
+  return <div>{props.title}: {props.count}</div>;
+}
+```
+
+### Children Prop
+
+```typescript
+interface Props {
+  children: React.ReactNode;
+}
+
+export function Container({ children }: Props) {
+  return <div className="container">{children}</div>;
+}
+```
+
+### Spreading Props
+
+```typescript
+// Pass all props to child
+<ChildComponent {...props} />
+
+// Separate specific props
+const { className, ...rest } = props;
+<div className={cn("base", className)} {...rest} />
+```
+
+## Forms
+
+Use react-hook-form with zod validation:
+
+```typescript
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const schema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+});
+
+type FormData = z.infer<typeof schema>;
+
+export function LoginForm() {
+  const form = useForm<FormData>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = (data: FormData) => {
+    // Handle submission
+  };
+
+  return <form onSubmit={form.handleSubmit(onSubmit)}>...</form>;
+}
+```
+
+## Best Practices
+
+### Do's ✅
+
+- Use functional components and hooks
+- Destructure props in function signature
+- Use TypeScript types for all props
+- Extract complex logic to custom hooks
+- Use meaningful component and variable names
+- Keep components small and focused
+- Use React Query (via tRPC) for server state
+- Handle loading and error states
+- Provide accessible components (use shadcn/ui components)
+
+### Don'ts ❌
+
+- Don't use class components (unless necessary)
+- Don't mutate state directly - use setState
+- Don't use index as key for dynamic lists
+- Don't create functions inside render without useCallback (if passed as props)
+- Don't fetch data in useEffect when tRPC is available
+- Don't ignore TypeScript errors
+- Don't create massive components - break them down
+- Don't forget cleanup in useEffect
+
+## Error Boundaries
+
+For error boundaries, create a class component (or use a library):
+
+```typescript
+import { Component, type ReactNode } from "react";
+
+interface Props {
+  children: ReactNode;
+  fallback?: ReactNode;
+}
+
+interface State {
+  hasError: boolean;
+}
+
+export class ErrorBoundary extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback ?? <div>Something went wrong</div>;
+    }
+    return this.props.children;
+  }
+}
+```
+
+## React 19 Features
+
+React 19 introduces new features. Use them when appropriate:
+
+- Actions and form handling improvements
+- use() hook for reading resources
+- Improved hydration error messages
+- Better TypeScript support

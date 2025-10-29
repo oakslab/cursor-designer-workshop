@@ -1,0 +1,166 @@
+---
+alwaysApply: true
+---
+
+# Development Workflow
+
+## Package Manager
+
+This project uses **pnpm** exclusively. Always use pnpm commands:
+
+```bash
+# Install dependencies
+pnpm install
+
+# Add a dependency
+pnpm add package-name
+
+# Add a dev dependency
+pnpm add -D package-name
+
+# Remove a dependency
+pnpm remove package-name
+```
+
+❌ Don't use `npm` or `yarn`
+
+## Scripts
+
+Available npm scripts from [package.json](mdc:package.json):
+
+### Development
+
+```bash
+pnpm dev              # Start dev server with Turbopack
+pnpm preview          # Build and preview production
+```
+
+### Build & Start
+
+```bash
+pnpm build           # Build for production
+pnpm start           # Start production server
+```
+
+### Code Quality
+
+```bash
+pnpm lint            # Run ESLint
+pnpm lint:fix        # Fix ESLint errors automatically
+pnpm typecheck       # Type check without emitting
+pnpm check           # Run both lint and typecheck
+```
+
+### Formatting
+
+```bash
+pnpm format:check    # Check code formatting
+pnpm format:write    # Format code with Prettier
+```
+
+### Presentation (Slidev)
+
+```bash
+pnpm presentation:dev      # Start presentation dev server
+pnpm presentation:build    # Build presentation
+pnpm presentation:export   # Export presentation as PDF
+```
+
+## Code Quality Standards
+
+### Before Committing
+
+1. Run `pnpm format:write` to format code
+2. Run `pnpm lint:fix` to fix linting issues
+3. Run `pnpm typecheck` to ensure no type errors
+4. Or use `pnpm check` to run lint and typecheck together
+
+### ESLint
+
+- Configuration: [eslint.config.js](mdc:eslint.config.js)
+- Uses Next.js recommended rules
+- typescript-eslint for TS-specific rules
+
+### Prettier
+
+- Configuration: [prettier.config.js](mdc:prettier.config.js)
+- Auto-sorts Tailwind classes via `prettier-plugin-tailwindcss`
+- Formats `.ts`, `.tsx`, `.js`, `.jsx`, `.mdx` files
+
+### TypeScript
+
+- Strict mode enabled
+- Run `pnpm typecheck` frequently during development
+- Address type errors immediately - don't use `@ts-ignore` without good reason
+
+## Development Tips
+
+### Hot Reload
+
+Next.js with Turbopack provides fast hot reload. If you experience issues:
+
+```bash
+# Kill the dev server and restart
+# Or delete .next folder
+rm -rf .next && pnpm dev
+```
+
+### Environment Variables
+
+Environment variables are validated via [src/env.js](mdc:src/env.js) using `@t3-oss/env-nextjs`.
+
+To add new env variables:
+
+1. Update [src/env.js](mdc:src/env.js) with Zod schema
+2. Add to `.env.example` (for documentation)
+3. Add to your local `.env` file
+
+### Debugging tRPC
+
+The project includes timing middleware that adds artificial delays (100-500ms) in development. Check the console for timing logs:
+
+```
+[TRPC] post.hello took 234ms to execute
+```
+
+### Adding shadcn Components
+
+Use the shadcn CLI:
+
+```bash
+pnpm dlx shadcn@latest add button
+pnpm dlx shadcn@latest add card dialog
+```
+
+Components are added to [src/components/ui/](mdc:src/components/ui/).
+
+## Performance
+
+- Use React DevTools Profiler to identify slow renders
+- Use Next.js built-in Image component for images
+- Code split heavy dependencies with dynamic imports
+- Monitor bundle size with `pnpm build`
+
+## Common Issues
+
+**Type errors after installing packages:**
+
+```bash
+pnpm typecheck
+# Check tsconfig.json paths are correct
+```
+
+**Tailwind classes not working:**
+
+```bash
+# Restart dev server
+# Check globals.css is imported in _app.tsx
+```
+
+**tRPC not working:**
+
+```bash
+# Check server is running
+# Check network tab for /api/trpc calls
+# Verify router is registered in root.ts
+```

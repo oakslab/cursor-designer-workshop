@@ -1,0 +1,96 @@
+---
+globs: **/server/api/**/*.ts,**/pages/api/**/*.ts
+---
+
+# tRPC Patterns and Best Practices
+
+## Core Setup
+
+The tRPC setup is in [src/server/api/trpc.ts](mdc:src/server/api/trpc.ts) and should rarely be modified.
+
+## Router Structure
+
+Place all routers in [src/server/api/routers/](mdc:src/server/api/routers/) and register them in [src/server/api/root.ts](mdc:src/server/api/root.ts).
+
+### Creating a New Router
+
+```typescript
+import { z } from "zod";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+
+export const exampleRouter = createTRPCRouter({
+  // Query example
+  getById: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input, ctx }) => {
+      // Use ctx.db for database access
+      return { id: input.id, name: "Example" };
+    }),
+
+  // Mutation example
+  create: publicProcedure
+    .input(z.object({ name: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      // Mutation logic here
+      return { success: true };
+    }),
+});
+```
+
+## Procedure Types
+
+- **`publicProcedure`**: Available to all users (authenticated or not)
+- **`protectedProcedure`**: Currently same as public (auth removed from project)
+
+## Input Validation
+
+Always use Zod schemas for input validation:
+
+```typescript
+.input(z.object({
+  email: z.string().email(),
+  age: z.number().min(0).optional(),
+  tags: z.array(z.string()).default([]),
+}))
+```
+
+## Client Usage
+
+Import and use the tRPC client from [src/utils/api.ts](mdc:src/utils/api.ts):
+
+```typescript
+import { api } from "~/utils/api";
+
+// In a component
+export default function MyComponent() {
+  // Query
+  const { data, isLoading } = api.example.getById.useQuery({ id: "123" });
+
+  // Mutation
+  const createMutation = api.example.create.useMutation({
+    onSuccess: () => {
+      // Invalidate queries or redirect
+    },
+  });
+
+  return (
+    <div>
+      {isLoading ? "Loading..." : data?.name}
+    </div>
+  );
+}
+```
+
+## Context
+
+## Error Handling
+
+- Use `TRPCError` for custom errors
+- Zod validation errors are automatically formatted
+- Network errors are handled by React Query
+
+## Performance Notes
+
+- Development has artificial delay (100-500ms) via timing middleware
+- Consider pagination for large datasets
+- Use `enabled` option to conditionally fetch data

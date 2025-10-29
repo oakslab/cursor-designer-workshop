@@ -1,0 +1,152 @@
+---
+globs: **/pages/**/*.tsx,**/pages/**/*.ts
+---
+
+# Next.js Pages Router Guidelines
+
+This project uses Next.js **Pages Router** (not App Router).
+
+## Page Structure
+
+Pages are in [src/pages/](mdc:src/pages/):
+
+- `index.tsx` - Home page (route: `/`)
+- `about.tsx` - About page (route: `/about`)
+- `blog/[slug].tsx` - Dynamic route (route: `/blog/:slug`)
+- `api/` - API routes
+
+## Page Component Pattern
+
+```typescript
+import { type NextPage } from "next";
+import Head from "next/head";
+
+const MyPage: NextPage = () => {
+  return (
+    <>
+      <Head>
+        <title>Page Title</title>
+        <meta name="description" content="Page description" />
+      </Head>
+      <main>
+        {/* Page content */}
+      </main>
+    </>
+  );
+};
+
+export default MyPage;
+```
+
+## Data Fetching
+
+### Client-Side with tRPC
+
+```typescript
+import { api } from "~/utils/api";
+
+export default function Page() {
+  const { data, isLoading } = api.example.getAll.useQuery();
+
+  if (isLoading) return <div>Loading...</div>;
+
+  return <div>{data?.map(...)}</div>;
+}
+```
+
+### Server-Side Rendering (SSR)
+
+```typescript
+import { type GetServerSideProps } from "next";
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // Fetch data
+  return {
+    props: {
+      data: // your data
+    },
+  };
+};
+```
+
+### Static Generation (SSG)
+
+```typescript
+import { type GetStaticProps } from "next";
+
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    props: {
+      data: // your data
+    },
+    revalidate: 60, // Revalidate every 60 seconds
+  };
+};
+```
+
+## Navigation
+
+Use Next.js `Link` component:
+
+```typescript
+import Link from "next/link";
+
+<Link href="/about" className="text-blue-500 hover:underline">
+  About
+</Link>
+```
+
+Use `useRouter` for programmatic navigation:
+
+```typescript
+import { useRouter } from "next/router";
+
+const router = useRouter();
+
+// Navigate
+router.push("/dashboard");
+
+// Get query params
+const { id } = router.query;
+```
+
+## API Routes
+
+API routes are in [src/pages/api/](mdc:src/pages/api/).
+
+**Note**: This project uses tRPC for APIs. Standard API routes should be avoided in favor of tRPC routers.
+
+The tRPC handler is at [src/pages/api/trpc/[trpc].ts](mdc:src/pages/api/trpc/[trpc].ts).
+
+## Best Practices
+
+- Always include `<Head>` with title and meta tags
+- Use semantic HTML (`<main>`, `<section>`, `<article>`)
+- Prefer tRPC queries over API routes
+- Use dynamic imports for heavy components
+- Implement loading states for async data
+- Handle errors gracefully with error boundaries or conditional rendering
+
+## Layout Pattern
+
+Create a layout component for shared UI:
+
+```typescript
+// src/components/Layout.tsx
+export function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="min-h-screen">
+      <header>{/* Navigation */}</header>
+      <main>{children}</main>
+      <footer>{/* Footer */}</footer>
+    </div>
+  );
+}
+
+// In page
+<Layout>
+  <div>Page content</div>
+</Layout>
+```
+
+Or use `_app.tsx` for global layout (see [src/pages/\_app.tsx](mdc:src/pages/_app.tsx)).

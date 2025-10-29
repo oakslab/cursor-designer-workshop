@@ -1,0 +1,143 @@
+---
+globs: **/components/**/*.tsx,**/pages/**/*.tsx
+---
+
+# shadcn/ui Component Guidelines
+
+## Configuration
+
+shadcn/ui is configured in [components.json](mdc:components.json):
+
+- **Style**: "new-york" variant
+- **Base Color**: neutral
+- **Icon Library**: lucide-react
+- **Components Location**: [src/components/ui/](mdc:src/components/ui/)
+
+## Using Components
+
+### Import Pattern
+
+```typescript
+import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardHeader } from "~/components/ui/card";
+import { Input } from "~/components/ui/input";
+```
+
+### Component Composition
+
+shadcn components are designed to be composed:
+
+```typescript
+<Card>
+  <CardHeader>
+    <CardTitle>Title</CardTitle>
+    <CardDescription>Description</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <p>Content here</p>
+  </CardContent>
+  <CardFooter>
+    <Button>Action</Button>
+  </CardFooter>
+</Card>
+```
+
+## Available Components
+
+All available UI components are in [src/components/ui/](mdc:src/components/ui/):
+
+- Form elements: Button, Input, Textarea, Select, Checkbox, Radio, Switch, Slider
+- Layout: Card, Separator, Tabs, Accordion, Collapsible, Resizable, Sidebar
+- Overlays: Dialog, Alert Dialog, Sheet, Drawer, Popover, Tooltip, Hover Card
+- Navigation: Navigation Menu, Menubar, Breadcrumb, Pagination
+- Feedback: Alert, Toast (Sonner), Progress, Spinner, Skeleton
+- Data Display: Table, Avatar, Badge, Calendar, Chart, Empty
+- Advanced: Command, Context Menu, Dropdown Menu, Scroll Area
+
+## Styling Components
+
+### Using className
+
+shadcn components accept `className` prop for customization:
+
+```typescript
+<Button className="bg-blue-500 hover:bg-blue-600">
+  Custom Button
+</Button>
+```
+
+### Variants
+
+Many components have built-in variants:
+
+```typescript
+<Button variant="default" size="default">Default</Button>
+<Button variant="destructive" size="sm">Delete</Button>
+<Button variant="outline" size="lg">Outline</Button>
+<Button variant="ghost">Ghost</Button>
+<Button variant="link">Link</Button>
+```
+
+## Form Handling
+
+Use with react-hook-form:
+
+```typescript
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
+import { Button } from "~/components/ui/button";
+
+const formSchema = z.object({
+  username: z.string().min(2),
+});
+
+export function MyForm() {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+  });
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Username</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Submit</Button>
+      </form>
+    </Form>
+  );
+}
+```
+
+## Icons
+
+Use lucide-react for icons:
+
+```typescript
+import { Search, User, Settings } from "lucide-react";
+
+<Button>
+  <Search className="mr-2 h-4 w-4" />
+  Search
+</Button>
+```
+
+## Best Practices
+
+- Don't modify files in `src/components/ui/` directly - they're managed by shadcn
+- Create wrapper components in `src/components/` for custom variations
+- Use the utility classes from [src/lib/utils.ts](mdc:src/lib/utils.ts) for className merging
+- Prefer composition over prop drilling
+- Keep accessibility in mind - shadcn components are accessible by default

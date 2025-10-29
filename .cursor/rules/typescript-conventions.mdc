@@ -1,0 +1,59 @@
+---
+globs: *.ts,*.tsx
+---
+
+# TypeScript Conventions
+
+## Compiler Options
+
+This project uses **strict TypeScript** with the following key settings:
+
+- `strict: true` - All strict type checking enabled
+- `noUncheckedIndexedAccess: true` - Array/object access returns `T | undefined`
+- `checkJs: true` - Type checking for JavaScript files
+- `verbatimModuleSyntax: true` - Explicit import/export syntax required
+
+## Code Style
+
+### Import Organization
+
+1. External packages first
+2. Internal modules using `~/` alias
+3. Relative imports last
+4. Group related imports together
+
+Example:
+
+```typescript
+import { useState } from "react";
+import { type NextPage } from "next";
+
+import { api } from "~/utils/api";
+import { Button } from "~/components/ui/button";
+
+import { LocalComponent } from "./components/LocalComponent";
+```
+
+### Type Annotations
+
+- Use `type` for object shapes and unions
+- Use `interface` for extensible object definitions
+- Prefer explicit return types for exported functions
+- Use `const` assertions where appropriate
+
+### Naming Conventions
+
+- **Files**: kebab-case for utilities, PascalCase for components
+- **Components**: PascalCase (e.g., `UserProfile.tsx`)
+- **Hooks**: camelCase starting with `use` (e.g., `useSession`)
+- **Utilities**: camelCase (e.g., `formatDate`)
+- **Constants**: UPPER_SNAKE_CASE for true constants
+- **Types/Interfaces**: PascalCase with descriptive names
+
+### Best Practices
+
+- Avoid `any` type - use `unknown` if type is truly unknown
+- Use nullish coalescing (`??`) and optional chaining (`?.`)
+- Leverage discriminated unions for complex state
+- Export types alongside implementations
+- Use `satisfies` operator for type validation without widening
