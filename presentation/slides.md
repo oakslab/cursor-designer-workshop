@@ -383,10 +383,10 @@ Direct access to structured design data
 
 <div class="grid grid-cols-2 gap-4">
   <div>
-    <img src="./figma-mcp.png" alt="Connecting Figma MCP - Step 1" class="rounded shadow border" />
+    <img src="./public/figma-mcp.png" alt="Connecting Figma MCP - Step 1" class="rounded shadow border" />
   </div>
   <div>
-    <img src="./cursor-mcp.png" alt="Connecting Figma MCP - Step 2" class="rounded shadow border" />
+    <img src="./public/cursor-mcp.png" alt="Connecting Figma MCP - Step 2" class="rounded shadow border" />
   </div>
 </div>
 
