@@ -124,3 +124,111 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Cute Cat (qcat) - Pure CSS/HTML illustration */
+.qcat {
+  --qcat-fur: #2c2c2c;
+  --qcat-ears: #f4a7b9;
+  --qcat-accent: #ffffff;
+  --qcat-bg: transparent;
+  --qcat-scale: 1;
+  position: relative;
+  display: inline-block;
+  font-size: 14px;
+  transform: scale(var(--qcat-scale));
+  transform-origin: top left;
+  background: var(--qcat-bg);
+}
+.qcat[data-size="sm"] { font-size: 10px; }
+.qcat[data-size="md"] { font-size: 14px; }
+.qcat[data-size="lg"] { font-size: 18px; }
+
+.qcat *, .qcat *::before, .qcat *::after { box-sizing: border-box; }
+
+.qcat-scene { position: absolute; inset: 0; pointer-events: none; }
+.qcat-shadow {
+  position: absolute; left: 5px; right: 5px; bottom: -2px; height: 8px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.25), rgba(0,0,0,0) 60%);
+  filter: blur(2px);
+}
+
+.qcat-body { position: relative; width: 14em; height: 10em; }
+.qcat-torso {
+  position: absolute; left: 3.5em; top: 3.8em; width: 8em; height: 5.4em;
+  background: var(--qcat-fur); border-radius: 2.8em 2.8em 3.2em 3.2em;
+}
+.qcat-paw {
+  position: absolute; bottom: 0.1em; width: 2.2em; height: 1.2em;
+  background: var(--qcat-fur); border-radius: 0.8em;
+}
+.qcat-paw--left { left: 4.2em; }
+.qcat-paw--right { left: 7.4em; }
+
+.qcat-tail {
+  position: absolute; left: 10.6em; top: 4.2em; width: 0.9em; height: 5.4em;
+  background: var(--qcat-fur); border-radius: 0.6em; transform-origin: top center;
+  animation: qcat-tail 3.2s ease-in-out infinite;
+}
+
+.qcat-head {
+  position: absolute; left: 0; top: 0.6em; width: 6.2em; height: 6.2em;
+  background: var(--qcat-fur); border-radius: 2.2em; transform: translateX(0.6em);
+}
+.qcat-ear {
+  position: absolute; width: 2.2em; height: 2.2em; background: var(--qcat-fur);
+  transform: rotate(45deg); top: -0.8em; border-radius: 0.4em; overflow: hidden;
+}
+.qcat-ear::after { content: ""; position: absolute; inset: 0.4em; background: var(--qcat-ears); border-radius: 0.3em; }
+.qcat-ear--left { left: 0.6em; }
+.qcat-ear--right { right: 0.6em; }
+
+.qcat-face { position: absolute; inset: 0; }
+.qcat-eye {
+  position: absolute; top: 2.2em; width: 1.6em; height: 1.6em; background: var(--qcat-accent);
+  border-radius: 50%; overflow: hidden;
+}
+.qcat-eye--left { left: 1.4em; }
+.qcat-eye--right { right: 1.4em; }
+.qcat-pupil { position: absolute; top: 0.25em; left: 0.55em; width: 0.5em; height: 1.1em; background: #1a1a1a; border-radius: 0.4em; }
+.qcat-eyelid {
+  position: absolute; top: 0; left: 0; right: 0; height: 100%; background: var(--qcat-fur);
+  transform-origin: top center; transform: scaleY(0);
+  animation: qcat-blink 5.5s cubic-bezier(.4,0,.2,1) infinite;
+}
+
+.qcat-nose { position: absolute; top: 3.6em; left: 50%; width: 0.9em; height: 0.7em; background: var(--qcat-ears); border-radius: 0.3em; transform: translateX(-50%); }
+
+.qcat-whiskers { position: absolute; top: 3.7em; width: 3.8em; height: 0.2em; }
+.qcat-whiskers--left { left: -2.4em; }
+.qcat-whiskers--right { right: -2.4em; }
+.qcat-whiskers span { position: absolute; left: 0; right: 0; height: 2px; background: #dcdcdc; transform-origin: left center; opacity: 0.9; }
+.qcat-whiskers--left span:nth-child(1) { top: -0.8em; transform: rotate(-10deg); }
+.qcat-whiskers--left span:nth-child(2) { top: 0; transform: rotate(0deg); }
+.qcat-whiskers--left span:nth-child(3) { top: 0.8em; transform: rotate(10deg); }
+.qcat-whiskers--right span:nth-child(1) { top: -0.8em; transform: rotate(10deg); }
+.qcat-whiskers--right span:nth-child(2) { top: 0; transform: rotate(0deg); }
+.qcat-whiskers--right span:nth-child(3) { top: 0.8em; transform: rotate(-10deg); }
+
+.qcat-mouth { position: absolute; top: 4.2em; left: 50%; width: 2.6em; height: 1.8em; transform: translateX(-50%); }
+.qcat-mouth--left, .qcat-mouth--right {
+  position: absolute; width: 1.2em; height: 1em; border: 2px solid #1a1a1a; border-top: none; border-left: none; border-right: none; border-radius: 0 0 1em 1em;
+}
+.qcat-mouth--left { left: 0; transform: rotate(12deg); }
+.qcat-mouth--right { right: 0; transform: rotate(-12deg); }
+
+@keyframes qcat-blink {
+  0%, 93%, 100% { transform: scaleY(0); }
+  94% { transform: scaleY(1); }
+  96% { transform: scaleY(0); }
+  97% { transform: scaleY(1); }
+  98.5% { transform: scaleY(0); }
+}
+
+@keyframes qcat-tail {
+  0% { transform: rotate(6deg) translateY(0); }
+  50% { transform: rotate(-4deg) translateY(0.2em); }
+  100% { transform: rotate(6deg) translateY(0); }
+}
+
+.qcat[data-static] .qcat-eyelid,
+.qcat[data-static] .qcat-tail { animation: none !important; }
