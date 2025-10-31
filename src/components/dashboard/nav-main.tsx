@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { IconCirclePlusFilled, IconMail, type Icon } from "@tabler/icons-react";
 
 import { Button } from "~/components/ui/button";
@@ -43,16 +44,27 @@ export function NavMain({
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild tooltip={item.title}>
-                <a href={item.url}>
-                  {item.icon && <item.icon />}
-                  <span>{item.title}</span>
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+          {items.map((item) => {
+            const IconComponent = item.icon;
+            const isExternal = item.url.startsWith("http") || item.url === "#";
+            const content = (
+              <>
+                {IconComponent && <IconComponent />}
+                <span>{item.title}</span>
+              </>
+            );
+            return (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton asChild tooltip={item.title}>
+                  {isExternal ? (
+                    <a href={item.url}>{content}</a>
+                  ) : (
+                    <Link href={item.url}>{content}</Link>
+                  )}
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>

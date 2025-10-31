@@ -17,6 +17,7 @@ import {
   IconSearch,
   IconSettings,
   IconUsers,
+  IconClipboardList,
 } from "@tabler/icons-react";
 
 import { NavDocuments } from "~/components/dashboard/nav-documents";
@@ -33,39 +34,46 @@ import {
   SidebarMenuItem,
 } from "~/components/ui/sidebar";
 
+const navMainItems = [
+  {
+    title: "Dashboard",
+    url: "/",
+    icon: IconDashboard,
+  },
+  {
+    title: "Lifecycle",
+    url: "#",
+    icon: IconListDetails,
+  },
+  {
+    title: "Analytics",
+    url: "/analytics",
+    icon: IconChartBar,
+  },
+  {
+    title: "Patient Card",
+    url: "/patient-card",
+    icon: IconClipboardList,
+  },
+  {
+    title: "Projects",
+    url: "#",
+    icon: IconFolder,
+  },
+  {
+    title: "Team",
+    url: "#",
+    icon: IconUsers,
+  },
+];
+
 const data = {
   user: {
     name: "shadcn",
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/",
-      icon: IconDashboard,
-    },
-    {
-      title: "Lifecycle",
-      url: "#",
-      icon: IconListDetails,
-    },
-    {
-      title: "Analytics",
-      url: "/analytics",
-      icon: IconChartBar,
-    },
-    {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder,
-    },
-    {
-      title: "Team",
-      url: "#",
-      icon: IconUsers,
-    },
-  ],
+  navMain: navMainItems,
   navClouds: [
     {
       title: "Capture",
