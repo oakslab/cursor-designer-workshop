@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Dashboard - Design Workshop</title>
+        <title>Dashboard</title>
         <meta
           name="description"
           content="Dashboard with sidebar, charts and data table"
