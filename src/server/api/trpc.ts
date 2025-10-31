@@ -12,8 +12,6 @@ import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import { db } from "~/server/db";
-
 /**
  * 1. CONTEXT
  *
@@ -35,9 +33,7 @@ interface CreateContextOptions {}
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
 const createInnerTRPCContext = (_: CreateContextOptions) => {
-  return {
-    db,
-  };
+  return {};
 };
 
 /**
