@@ -1,102 +1,133 @@
-import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
-
-import { Badge } from "~/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { Separator } from "~/components/ui/separator";
 import {
-  Card,
-  CardAction,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
+  PriorityGroup,
+  PriorityItem,
+  type PriorityItemData,
+} from "~/components/dashboard/priority-item";
 
 export function SectionCards() {
   return (
-    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
-      <Card className="@container/card">
-        <CardHeader>
-          <CardDescription>Total Revenue</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            $1,250.00
-          </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <IconTrendingUp />
-              +12.5%
-            </Badge>
-          </CardAction>
+    <div className="px-4 lg:px-6">
+      <Card>
+        <CardHeader className="gap-1">
+          <div className="flex items-center gap-3">
+            <CardTitle className="text-lg">Daily Brief</CardTitle>
+            <span className="text-muted-foreground text-sm">
+              Last sync: January 15, 2025 13:21
+            </span>
+          </div>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Trending up this month <IconTrendingUp className="size-4" />
+        <CardContent>
+          <div className="flex w-full items-start gap-6 rounded-md">
+            <div className="flex min-w-0 flex-1 flex-col gap-1">
+              <span className="text-muted-foreground text-base">
+                Active Shipments
+              </span>
+              <span className="text-2xl font-semibold tabular-nums">12</span>
+              <span className="text-destructive text-xs">2 delayed</span>
+            </div>
+
+            <Separator orientation="vertical" />
+
+            <div className="flex min-w-0 flex-1 flex-col gap-1">
+              <span className="text-muted-foreground text-base">
+                Active Quotes
+              </span>
+              <span className="text-2xl font-semibold tabular-nums">23</span>
+              <span className="text-muted-foreground text-xs">
+                3 expiring today
+              </span>
+            </div>
+
+            <Separator orientation="vertical" />
+
+            <div className="flex min-w-0 flex-1 flex-col gap-1">
+              <span className="text-muted-foreground text-base">
+                New bookings
+              </span>
+              <span className="text-2xl font-semibold tabular-nums">3</span>
+              <span className="text-muted-foreground text-xs">
+                1 added today
+              </span>
+            </div>
+
+            <Separator orientation="vertical" />
+
+            <div className="flex min-w-0 flex-1 flex-col gap-1">
+              <span className="text-muted-foreground text-base">Total POs</span>
+              <span className="text-2xl font-semibold tabular-nums">23</span>
+              <span className="text-muted-foreground text-xs">
+                3 added today
+              </span>
+            </div>
           </div>
-          <div className="text-muted-foreground">
-            Visitors for the last 6 months
-          </div>
-        </CardFooter>
+        </CardContent>
       </Card>
-      <Card className="@container/card">
-        <CardHeader>
-          <CardDescription>New Customers</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            1,234
-          </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <IconTrendingDown />
-              -20%
-            </Badge>
-          </CardAction>
-        </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Down 20% this period <IconTrendingDown className="size-4" />
-          </div>
-          <div className="text-muted-foreground">
-            Acquisition needs attention
-          </div>
-        </CardFooter>
-      </Card>
-      <Card className="@container/card">
-        <CardHeader>
-          <CardDescription>Active Accounts</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            45,678
-          </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <IconTrendingUp />
-              +12.5%
-            </Badge>
-          </CardAction>
-        </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Strong user retention <IconTrendingUp className="size-4" />
-          </div>
-          <div className="text-muted-foreground">Engagement exceed targets</div>
-        </CardFooter>
-      </Card>
-      <Card className="@container/card">
-        <CardHeader>
-          <CardDescription>Growth Rate</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            4.5%
-          </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <IconTrendingUp />
-              +4.5%
-            </Badge>
-          </CardAction>
-        </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Steady performance increase <IconTrendingUp className="size-4" />
-          </div>
-          <div className="text-muted-foreground">Meets growth projections</div>
-        </CardFooter>
-      </Card>
+
+      <div className="mt-6">
+        <Card>
+          <CardHeader className="gap-1">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex flex-col">
+                <CardTitle className="text-base">
+                  Your Priorities Today
+                </CardTitle>
+                <span className="text-muted-foreground text-sm">
+                  Review what are the upcoming tasks for you
+                </span>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <PriorityGroup>
+              {MOCK_PRIORITIES.map((p) => (
+                <PriorityItem key={`${p.assetCode}-${p.title}`} item={p} />
+              ))}
+            </PriorityGroup>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
+
+const MOCK_PRIORITIES: PriorityItemData[] = [
+  {
+    assetCode: "PO-12342",
+    title: "Upload CIPL",
+    vessel: "Vessel ABS",
+    packagesLabel: "12 pkgs",
+    dueLabel: "Today",
+  },
+  {
+    assetCode: "Q-12342",
+    title: "Review quote expiring today",
+    vessel: "Vessel ABS",
+    packagesLabel: "12 pkgs",
+    dueLabel: "Today",
+  },
+  {
+    assetCode: "S-12342",
+    title: "Review shipment status",
+    vessel: "Vessel ABS",
+    packagesLabel: "12 pkgs",
+    statusLabel: "Delayed",
+    statusVariant: "destructive",
+    dueLabel: "Today",
+  },
+  {
+    assetCode: "Q-12342",
+    title: "Review quote expiring today",
+    vessel: "Vessel ABS",
+    packagesLabel: "12 pkgs",
+    dueLabel: "12.12.2025",
+  },
+  {
+    assetCode: "PO-12342",
+    title: "Upload CIPL",
+    vessel: "Vessel ABS",
+    packagesLabel: "12 pkgs",
+    dueLabel: "12.12.2024",
+  },
+];
