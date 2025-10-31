@@ -15,9 +15,11 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Dashboard - Design Workshop</title>
+        <title>Dashboard 
+      
+        </title>
         <meta
-          name="description"
+          name="description of the dashboard description of the dashboard"
           content="Dashboard with sidebar, charts and data table"
         />
         <link rel="icon" href="/favicon.ico" />
