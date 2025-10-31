@@ -3,6 +3,7 @@
 import * as React from "react";
 import { type Icon } from "@tabler/icons-react";
 
+import { ThemeToggle } from "~/components/dashboard/theme-toggle";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -25,6 +26,7 @@ export function NavSecondary({
     <SidebarGroup {...props}>
       <SidebarGroupContent>
         <SidebarMenu>
+          <ThemeToggle />
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>
